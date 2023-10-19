@@ -69,8 +69,10 @@ class UserView(APIView):
     
 class LogoutView(APIView):
     def post(self, request):
+        tocken = request.COOKIES.get('jwt')
         response = Response()
-        response.delete_cookie('jwt')
+        response.set_cookie(key='jwt', value=tocken, httponly=True, samesite="none", secure=True, max_age=0)
+
         response.data = {
             'message': 'success'
         }
